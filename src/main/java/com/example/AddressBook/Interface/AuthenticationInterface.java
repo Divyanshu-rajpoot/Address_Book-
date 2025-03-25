@@ -2,7 +2,6 @@ package com.example.AddressBook.Interface;
 
 import com.example.AddressBook.DTO.ForgotPasswordRequest;
 import com.example.AddressBook.DTO.LoginRequest;
-import com.example.AddressBook.DTO.ResetPasswordRequest;
 import com.example.AddressBook.DTO.SignupRequest;
 import com.example.AddressBook.Model.User;
 import org.springframework.http.ResponseEntity;
