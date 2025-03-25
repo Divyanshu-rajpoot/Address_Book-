@@ -4,8 +4,12 @@ package com.example.AddressBook.Service;
 import com.example.AddressBook.DTO.AddressBookDTO;
 import com.example.AddressBook.Interface.AddressBookInterface;
 import com.example.AddressBook.Model.Address;
+import com.example.AddressBook.Model.User;
 import com.example.AddressBook.Repository.AddressBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +21,11 @@ public class AddressBookService implements AddressBookInterface {
     @Autowired
     AddressBookRepository addressBookRepository;
 
+    static final String ADDRESS_CACHE = "addresses";
+
+
     @Override
-    public Address addAddress(AddressBookDTO addressBookDTO) throws Exception {
+    public Address addAddress(AddressBookDTO addressBookDTO , User user) throws Exception {
 
         Optional<?> checkformail = addressBookRepository.findByEmail(addressBookDTO.getEmail());
 
@@ -31,12 +38,13 @@ public class AddressBookService implements AddressBookInterface {
         temp.setName(addressBookDTO.getName());
         temp.setEmail(addressBookDTO.getEmail());
         temp.setPhoneNumber(addressBookDTO.getPhoneNumber());
+        temp.setUser(user);
         return addressBookRepository.save(temp);
     }
 
     @Override
     public void deleteAddress(Long ID) {
-         addressBookRepository.deleteById(ID);
+        addressBookRepository.deleteById(ID);
     }
 
     @Override
@@ -68,6 +76,7 @@ public class AddressBookService implements AddressBookInterface {
     }
 
     @Override
+
     public Optional<Address> getContactById(Long id) {
         return addressBookRepository.findById(id);
     }
